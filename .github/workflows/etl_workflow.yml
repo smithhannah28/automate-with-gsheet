@@ -20,8 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
-          pip install pandas gspread google-auth sqlalchemy psycopg2-binary
+        pip install -r requirements.txt
 
       - name: Run ETL
         env:
