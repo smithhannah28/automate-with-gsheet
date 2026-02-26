@@ -2,7 +2,7 @@ name: ETL Google Sheets → PostgreSQL
 
 on:
   schedule:
-    - cron: "0 6 * * *"   # tous les jours à 6h UTC
+    - cron: "0 6 1 1,4,7,10 *"   # tous les 1er jan/avr/juil/oct à 6h UTC
   workflow_dispatch:        # déclenchement manuel possible
 
 jobs:
