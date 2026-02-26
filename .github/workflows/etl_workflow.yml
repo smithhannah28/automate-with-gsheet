@@ -1,0 +1,37 @@
+name: ETL Google Sheets → PostgreSQL
+
+on:
+  schedule:
+    - cron: "0 6 * * *"   # tous les jours à 6h UTC
+  workflow_dispatch:        # déclenchement manuel possible
+
+jobs:
+  etl:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pandas gspread google-auth sqlalchemy psycopg2-binary
+
+      - name: Run ETL
+        env:
+          SHEET_ID:            ${{ secrets.SHEET_ID }}
+          WORKSHEET:           ${{ secrets.WORKSHEET }}
+          GOOGLE_SA_KEY_JSON:  ${{ secrets.GOOGLE_SA_KEY_JSON }}
+          PG_USER:             ${{ secrets.PG_USER }}
+          PG_PASSWORD:         ${{ secrets.PG_PASSWORD }}
+          PG_HOST:             ${{ secrets.PG_HOST }}
+          PG_PORT:             ${{ secrets.PG_PORT }}
+          PG_DB:               ${{ secrets.PG_DB }}
+          PG_TABLE:            ${{ secrets.PG_TABLE }}
+        run: python etl.py
